@@ -96,7 +96,7 @@ func (self *reader) readProto(parentSource string) *Prototype {
 	if source == "" {
 		source = parentSource
 	}
-	return &Prototype{
+	p := &Prototype{
 		Source: source,
 		LineDefined: self.readUint32(),
 		LastLineDefined: self.readUint32(),
@@ -111,6 +111,7 @@ func (self *reader) readProto(parentSource string) *Prototype {
 		LocVars: self.readLocVars(),
 		UpvalueNames: self.readUpvalueNames(),
 	}
+	return p
 }
 
 func (self *reader) readCode() []uint32 {
@@ -124,7 +125,7 @@ func (self *reader) readCode() []uint32 {
 func (self *reader) readConstants() []interface{} {
 	constants := make([]interface{}, self.readUint32())
 	for i := range constants {
-		constants[i] = self.readConstants()
+		constants[i] = self.readConstant()
 	}
 	return constants
 }
