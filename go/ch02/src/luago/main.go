@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/tianbingJ/lua-go/lua-dump/vm"
 	"io/ioutil"
 	"os"
 	"tianbingj.github.com/binchunk"
@@ -50,7 +51,54 @@ func printCode(f *binchunk.Prototype) {
 		if len(f.LineInfo) > 0 {
 			line = fmt.Sprintf("%d", f.LineInfo[pc])
 		}
-		fmt.Printf("\t%d\t[%s]\t0x%08x\n", pc+1, line, c)
+		i := vm.Instruction(c)
+		fmt.Printf("\t%d\t[%s]\t%s \t", pc+1, line, i.OpName())
+		printOperands(i)
+		fmt.Println()
+	}
+}
+
+func printOperands(i vm.Instruction) {
+	switch i.OpMode() {
+	case vm.IABC:
+		a, b, c := i.ABC()
+		fmt.Printf("%d", a)
+		if i.BMode() != vm.OpArgN {
+			//参数B和C即可以表示寄存器索引，也可以表示常量池索引。
+			//究竟表示哪种索引是由参数的最高位确定的：如果最高位是1，表示常量池索引，否则表示寄存器索引。
+			//所以虽然B和C都占9个比特，但是去掉最高位之后，仍然只有8个有效比特。
+			if b > 0xFF {
+				fmt.Printf(" %d", -1-b&0xFF)
+			} else {
+				fmt.Printf(" %d", b)
+			}
+		}
+		if i.CMode() != vm.OpArgN {
+			//B和C是9位，如果最高位是1，则说明
+			if c > 0xFF {
+				//TODO 这里什么意思，没有看明白。。
+				fmt.Printf(" %d", -1-c&0xFF)
+			} else {
+				fmt.Printf(" %d", c)
+			}
+		}
+	case vm.IABx:
+		a, bx := i.ABx()
+		fmt.Printf("%d", a)
+		if i.BMode() != vm.OpArgN {
+			//B和C是9位，如果最高位是1，则说明
+			if i.BMode() == vm.OpArgK {
+				fmt.Printf(" %d", -1-bx)
+			} else if i.BMode() == vm.OpArgU {
+				fmt.Printf(" %d", bx)
+			}
+		}
+	case vm.IAsBx:
+		a, sBx := i.AsBx()
+		fmt.Printf("%d %d", a, sBx)
+	case vm.IAx:
+		ax := i.Ax()
+		fmt.Printf("%d", -1-ax)
 	}
 }
 

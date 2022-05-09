@@ -36,10 +36,12 @@ func (self *reader) readLuaNumber() float64 {
 }
 
 func (self *reader) readString() string {
+	//短字符串用一个字节表示长度
 	size := uint(self.readByte())
 	if size == 0 {
 		return ""
 	}
+	//如果第一个字节是FF，则后面才是长度
 	if size == 0xFF {
 		size = uint(self.readUint64())
 	}
