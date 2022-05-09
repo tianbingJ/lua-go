@@ -1,5 +1,10 @@
 package state
 
+//valid indices:指向可修改的栈位置，包括[1, 到栈顶n] (1 <= abs(idx) <= top)和 pseudo-indices(可以被外部语言访问，但不在栈里)
+//acceptable indices:
+//1.可以是valid indices,也包括给栈分配了空间但是在栈顶之外的位置； 0不是一个acceptable index
+//2.index < 0 && abs(index) <= top || (index > 0 && index <= stackspace)
+
 //lua的栈索引是从1开始, [1,n]
 //但是这个top指向的是栈顶元素的下一个位置?
 type luaStack struct {
@@ -41,6 +46,7 @@ func (self *luaStack) pop() luaValue {
 }
 
 //把索引转为绝对索引, 不检查有效性
+//A positive index represents an absolute stack position (starting at 1);
 func (self *luaStack) absIndex(idx int) int {
 	if idx >= 0 {
 		return idx

@@ -88,7 +88,7 @@ func (self *luaState) SetTop(idx int) {
 	if n > 0 {
 		self.Pop(n)
 	} else if n < 0 {
-		for i := 0; i < n; i ++ {
+		for i := 0; i < - n; i ++ {
 			self.stack.push(nil)
 		}
 	}
