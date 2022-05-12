@@ -7,7 +7,7 @@ import (
 )
 
 func TestLuaState(t *testing.T) {
-	ls := New()
+	ls := New(20, nil)
 	ls.PushBoolean(true)
 	printStack(ls)
 	ls.PushInteger(10)
@@ -47,7 +47,7 @@ func printStack(ls *luaState) {
 }
 
 func TestLuaStateArith(t *testing.T) {
-	ls := New()
+	ls := New(20, nil)
 	ls.PushInteger(1)
 	ls.PushString("2.0")
 	ls.PushString("3.0")
