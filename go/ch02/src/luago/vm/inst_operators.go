@@ -5,6 +5,9 @@ import "github.com/tianbingJ/lua-go/lua-dump/api"
 //R(A) = RK(B) op RK(C)
 func _binaryArith(i Instruction, vm api.LuaVM, op api.ArithOp) {
 	a, b, c := i.ABC()
+	//TODO 为什么a += 1， b和c不需要？
+	a += 1
+
 	vm.GetRK(b)
 	vm.GetRK(c)
 	vm.Arith(op)

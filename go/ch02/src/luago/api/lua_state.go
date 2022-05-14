@@ -11,6 +11,7 @@ type LuaState interface {
 	Pop(n int)
 	Copy(fromIdx, toIdx int)
 	PushValue(idx int)
+	//用栈顶的值替换掉idx位置的值
 	Replace(idx int)
 	Insert(idx int)
 	Remove(idx int)

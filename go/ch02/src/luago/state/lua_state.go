@@ -24,7 +24,7 @@ func (self *luaState) AbsIndex(idx int) int {
 	return self.stack.absIndex(idx)
 }
 
-func (self *luaState) checkStack(n int) bool {
+func (self *luaState) CheckStack(n int) bool {
 	self.stack.check(n)
 	return true
 }

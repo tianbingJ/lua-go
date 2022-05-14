@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"github.com/tianbingJ/lua-go/lua-dump/api"
+	"github.com/tianbingJ/lua-go/lua-dump/state"
 	"github.com/tianbingJ/lua-go/lua-dump/vm"
 	"io/ioutil"
 	"os"
@@ -16,6 +18,7 @@ func main() {
 		}
 		proto := binchunk.Undump(data)
 		list(proto)
+		luaMain(proto)
 	}
 }
 
@@ -140,4 +143,39 @@ func constantToString(k interface{}) string {
 	default:
 		return "?"
 	}
+}
+
+func luaMain(proto *binchunk.Prototype) {
+	nRegs := int(proto.MaxStackSize)
+	ls := state.New(nRegs + 8, proto)
+	ls.SetTop(nRegs)
+	for {
+		pc := ls.PC()
+		inst := vm.Instruction(ls.Fetch())
+		if inst.Opcode() != vm.OP_RETURN {
+			inst.Execute(ls)
+			fmt.Printf("[%02d] %s ", pc + 1, inst.OpName())
+			printStack(ls)
+		} else {
+			break
+		}
+	}
+}
+
+func printStack(ls api.LuaState) {
+	top := ls.GetTop()
+	for i := 1; i <= top; i++ {
+		t := ls.Type(i)
+		switch t {
+		case api.LUA_TBOOLEAN:
+			fmt.Printf("[%t]", ls.ToBoolean(i))
+		case api.LUA_TNUMBER:
+			fmt.Printf("[%g]", ls.ToNumber(i))
+		case api.LUA_TSTRING:
+			fmt.Printf("[%q]", ls.ToString(i))
+		default:
+			fmt.Printf("[%s]", ls.TypeName(t))
+		}
+	}
+	fmt.Println()
 }
