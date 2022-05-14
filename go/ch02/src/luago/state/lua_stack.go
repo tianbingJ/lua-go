@@ -5,7 +5,7 @@ package state
 //1.可以是valid indices,也包括给栈分配了空间但是在栈顶之外的位置； 0不是一个acceptable index
 //2.index < 0 && abs(index) <= top || (index > 0 && index <= stackspace)
 
-//lua的栈索引是从1开始, [1,n]
+//lua的堆外的栈索引是从1开始, [1,n]
 //但是这个top指向的是栈顶元素的下一个位置?
 type luaStack struct {
 	slots []luaValue //存放值

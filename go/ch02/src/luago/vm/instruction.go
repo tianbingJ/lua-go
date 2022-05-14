@@ -1,5 +1,7 @@
 package vm
 
+import "github.com/tianbingJ/lua-go/lua-dump/api"
+
 type Instruction uint32
 
 const MAXARG_Bx = 1<<18 - 1       // 262143
@@ -12,8 +14,8 @@ func (self Instruction) Opcode() int {
 
 func (self Instruction) ABC() (a, b, c int) {
 	a = int(self >> 6 & 0xFF)
-	b = int(self >> 14 & 0x1FF)
-	c = int(self >> 23 & 0x1FF)
+	c = int(self >> 14 & 0x1FF)
+	b = int(self >> 23 & 0x1FF)
 	return
 }
 
@@ -48,5 +50,14 @@ func (self Instruction) BMode() byte {
 
 func (self Instruction) CMode() byte {
 	return opcodes[self.Opcode()].argCMode
+}
+
+func (self Instruction) Execution(vm api.LuaVM) {
+	action := opcodes[self.Opcode()].action
+	if action != nil {
+		action(self, vm)
+	} else {
+		panic(self.OpName())
+	}
 }
 

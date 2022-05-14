@@ -74,7 +74,6 @@ func printOperands(i vm.Instruction) {
 			}
 		}
 		if i.CMode() != vm.OpArgN {
-			//B和C是9位，如果最高位是1，则说明
 			if c > 0xFF {
 				//TODO 这里什么意思，没有看明白。。
 				fmt.Printf(" %d", -1-c&0xFF)
@@ -86,8 +85,8 @@ func printOperands(i vm.Instruction) {
 		a, bx := i.ABx()
 		fmt.Printf("%d", a)
 		if i.BMode() != vm.OpArgN {
-			//B和C是9位，如果最高位是1，则说明
 			if i.BMode() == vm.OpArgK {
+				//常量池索引字节码里是从0开始，luac显示的时候会转为从1开始；从常量池展示的是负数，与从寄存器里区分。
 				fmt.Printf(" %d", -1-bx)
 			} else if i.BMode() == vm.OpArgU {
 				fmt.Printf(" %d", bx)

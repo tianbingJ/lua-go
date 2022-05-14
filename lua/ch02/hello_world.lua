@@ -4,6 +4,5 @@
 -- Date: 2022/5/3
 --
 
-print("hello world")
-
+local a, b,c  = 1, 2, "foo"
 
