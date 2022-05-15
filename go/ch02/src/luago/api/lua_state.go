@@ -45,4 +45,15 @@ type LuaState interface {
 	Compare(idx1, idx2 int, op CompareOp) bool
 	Len(idx int)
 	Concat(n int)
+
+	//表相关api
+	NewTable()
+	CreateTable(nArr, nReg int)
+	//获取idx位置的table，并返回table[stack[top]]
+	GetTable(idx int) LuaType
+	GetField(idx int, k string) LuaType
+	GetI(idx int, i int64) LuaType
+	SetTable(idx int)
+	SetField(idx int, k string)
+	SetI(idx int, n int64)
 }

@@ -24,4 +24,8 @@ func TestLuaTable(t *testing.T) {
 	table.put(int64(4),nil)
 	len = table.len()
 	assert.Equal(t, 5, len)
+
+	table.put(int64(5),nil)
+	len = table.len()
+	assert.Equal(t, 2, len)
 }
