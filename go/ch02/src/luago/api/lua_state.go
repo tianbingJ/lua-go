@@ -48,6 +48,7 @@ type LuaState interface {
 
 	//表相关api
 	NewTable()
+	//创建新的table
 	CreateTable(nArr, nReg int)
 	//获取idx位置的table，并返回table[stack[top]]
 	GetTable(idx int) LuaType
@@ -55,5 +56,6 @@ type LuaState interface {
 	GetI(idx int, i int64) LuaType
 	SetTable(idx int)
 	SetField(idx int, k string)
+	//idx:栈的位置， n table数据部分的下标
 	SetI(idx int, n int64)
 }

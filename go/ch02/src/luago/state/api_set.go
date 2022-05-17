@@ -17,13 +17,14 @@ func (self *luaState) setTable(table, key, value luaValue) {
 }
 
 //键不是从栈中弹出，而是由参数传入
-func (self *luaState) setField(idx int, k string) {
+func (self *luaState) SetField(idx int, k string) {
 	t := self.stack.get(idx)
 	value := self.stack.pop()
 	self.setTable(t, k, value)
 }
 
-func (self *luaState) setFielI(idx int, i int64) {
+//从栈idx取数，设置到数据的i下标
+func (self *luaState) SetI(idx int, i int64) {
 	t := self.stack.get(idx)
 	value := self.stack.pop()
 	self.setTable(t, i, value)
