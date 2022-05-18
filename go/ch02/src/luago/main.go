@@ -147,7 +147,7 @@ func constantToString(k interface{}) string {
 
 func luaMain(proto *binchunk.Prototype) {
 	nRegs := int(proto.MaxStackSize)
-	ls := state.New(nRegs + 8, proto)
+	ls := state.New()
 	ls.SetTop(nRegs)
 	for {
 		pc := ls.PC()

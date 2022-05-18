@@ -8,8 +8,12 @@ package state
 //lua的堆外的栈索引是从1开始, [1,n]
 //但是这个top指向的是栈顶元素的下一个位置?
 type luaStack struct {
-	slots []luaValue //存放值
-	top   int
+	slots   []luaValue //存放值
+	top     int
+	prev    *luaStack
+	closure *closure
+	varargs []luaValue
+	pc      int
 }
 
 func newLuaStack(size int) *luaStack {
@@ -81,7 +85,7 @@ func (self *luaStack) reverse(from, to int) {
 	slots := self.slots
 	for from < to {
 		slots[from], slots[to] = slots[to], slots[from]
-		from ++
-		to --
+		from++
+		to--
 	}
 }
