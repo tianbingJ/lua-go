@@ -58,4 +58,9 @@ type LuaState interface {
 	SetField(idx int, k string)
 	//idx:栈的位置， n table数据部分的下标
 	SetI(idx int, n int64)
+
+	//加载二进制包, mode表示是二进制文件或者源码文件
+	Load(chunk[]byte, chunkName, mode string) int
+	//执行
+	Call(nArgs, nResults int)
 }

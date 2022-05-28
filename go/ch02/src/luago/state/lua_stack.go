@@ -89,3 +89,25 @@ func (self *luaStack) reverse(from, to int) {
 		to--
 	}
 }
+
+func (self *luaStack) popN(n int) []luaValue {
+	vals := make([]luaValue, n)
+	for i := n - 1; i >= 0; i-- {
+		vals[i] = self.pop()
+	}
+	return vals
+}
+
+func (self *luaStack) pushN(vals []luaValue, n int) {
+	nvals := len(vals)
+	if n < 0 {
+		n = nvals
+	}
+	for i := 0; i < n; i ++ {
+		if i < nvals {
+			self.push(vals[i])
+		} else {
+			self.push(nil)
+		}
+	}
+}
