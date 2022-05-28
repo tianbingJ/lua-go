@@ -103,6 +103,12 @@ func (self *Lexer) NextToken() (line, kind int, token string) {
 	case '+':
 		self.next(1)
 		return self.line, TOKEN_OP_ADD, "+"
+	case '-':
+		self.next(1)
+		return self.line, TOKEN_OP_MINUS, "-"
+	case '*':
+		self.next(1)
+		return self.line, TOKEN_OP_MUL, "*"
 	case '^':
 		self.next(1)
 		return self.line, TOKEN_OP_POW, "^"

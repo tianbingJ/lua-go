@@ -6,7 +6,7 @@ import (
 )
 
 func TestLongString(t *testing.T) {
-	str := `local x = "nihaoa"`
+	str := `local x = 1 + 9543 * 5`
 	testLexer(str, "")
 }
 
